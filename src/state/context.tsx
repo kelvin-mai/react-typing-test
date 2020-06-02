@@ -25,8 +25,33 @@ export const TypingProvider: FunctionComponent = ({ children }) => {
 export const useTyping = () => {
   const [state, dispatch] = useContext(typingContext);
 
-  const onInput = (value: string) =>
-    dispatch({ type: ActionTypes.ON_INPUT, payload: value });
+  const onInput = (value: string) => {
+    if (!state.timerId) {
+      startTimer();
+    }
+    if (state.input.length >= state.text.length && state.timerId) {
+      stopTimer();
+    }
+    dispatch({ type: ActionTypes.CHANGE_INPUT, payload: value });
+  };
 
-  return { state, onInput };
+  const startTimer = () => {
+    const timerId = setInterval(
+      () => dispatch({ type: ActionTypes.TICK }),
+      1000
+    );
+    dispatch({ type: ActionTypes.SET_TIMER, payload: timerId });
+  };
+
+  const stopTimer = () => {
+    clearInterval(state.timerId);
+    dispatch({ type: ActionTypes.SET_TIMER });
+  };
+
+  const onReset = () => {
+    stopTimer();
+    dispatch({ type: ActionTypes.CHANGE_INPUT, payload: '' });
+  };
+
+  return { state, onInput, onReset };
 };

@@ -3,7 +3,7 @@ export const words = (chars: number) => chars / 5;
 export const minutes = (secs: number) => secs / 60;
 
 export const wpm = (chars: number, secs: number) =>
-  Math.round(words(chars) / minutes(secs));
+  Math.round(words(chars) / minutes(secs)) || 0;
 
 export const countCorrectCharacters = (text: string, input: string) => {
   const textChars = text.replace(' ', '');

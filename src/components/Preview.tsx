@@ -1,10 +1,21 @@
 import React, { FunctionComponent } from 'react';
-import { useTyping } from '../state';
+import { useTyping } from '../state/context';
 
 export const Preview: FunctionComponent = () => {
   const {
-    state: { text },
+    state: { text, input },
   } = useTyping();
+  const previewText = text.split('').map((s, i) => {
+    let color = '';
+    if (i < input.length) {
+      color = s === input[i] ? 'green' : 'red';
+    }
+    return (
+      <span key={`${s}_${i}`} className={color}>
+        {s}
+      </span>
+    );
+  });
 
-  return <div>{text}</div>;
+  return <div className='preview'>{previewText}</div>;
 };

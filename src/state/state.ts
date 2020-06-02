@@ -1,3 +1,5 @@
+import { countCorrectCharacters } from '../utils';
+
 export interface State {
   text: string;
   input: string;
@@ -16,7 +18,9 @@ export const initialState: State = {
 };
 
 export enum ActionTypes {
-  ON_INPUT,
+  CHANGE_INPUT,
+  SET_TIMER,
+  TICK,
 }
 
 export interface Action<T> {
@@ -25,17 +29,32 @@ export interface Action<T> {
 }
 
 type Transducer = (state: State, action: Action<any>) => State;
-type Reducer<T = any> = (state: State, payload: T) => State;
+type Reducer<T = any> = (state: State, payload?: T) => State;
 
-export const changeInput: Reducer<string> = (state, input) => ({
+export const changeInput: Reducer<string> = (state, input = '') => ({
   ...state,
   input,
+  characters: countCorrectCharacters(state.text, input),
+});
+
+export const setTimer: Reducer<number> = (state, timerId) => ({
+  ...state,
+  timerId,
+});
+
+export const tick: Reducer = (state) => ({
+  ...state,
+  seconds: state.seconds + 1,
 });
 
 export const reducer: Transducer = (state, action) => {
   switch (action.type) {
-    case ActionTypes.ON_INPUT:
+    case ActionTypes.CHANGE_INPUT:
       return changeInput(state, action.payload);
+    case ActionTypes.SET_TIMER:
+      return setTimer(state, action.payload);
+    case ActionTypes.TICK:
+      return tick(state);
     default:
       return state;
   }

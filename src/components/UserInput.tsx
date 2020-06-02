@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { useTyping } from '../state';
+import { useTyping } from '../state/context';
 
 export const UserInput: FunctionComponent = () => {
   const {
@@ -8,5 +8,11 @@ export const UserInput: FunctionComponent = () => {
     onInput,
   } = useTyping();
 
-  return <textarea value={input} onChange={(e) => onInput(e.target.value)} />;
+  return (
+    <textarea
+      rows={5}
+      value={input}
+      onChange={(e) => onInput(e.target.value)}
+    />
+  );
 };
