@@ -1,12 +1,12 @@
-export const words = (chars: number) => chars / 5;
+export const words = (c: number) => c / 5;
 
-export const minutes = (secs: number) => secs / 60;
+export const minutes = (s: number) => s / 60;
 
-export const wpm = (chars: number, secs: number) =>
-  Math.round(words(chars) / minutes(secs)) || 0;
+export const wpm = (c: number, s: number) =>
+  Math.round(words(c) / minutes(s)) || 0;
 
 export const countCorrectCharacters = (text: string, input: string) => {
-  const textChars = text.replace(' ', '');
-  const inputChars = input.replace(' ', '');
-  return inputChars.split('').filter((c, i) => c === textChars[i]).length;
+  const tc = text.replace(' ', '');
+  const ic = input.replace(' ', '');
+  return ic.split('').filter((c, i) => c === tc[i]).length;
 };
